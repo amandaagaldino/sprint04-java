@@ -2,7 +2,6 @@ package fiap.tds.repositories;
 
 import fiap.tds.entities.enums.TIPOS_ALERTA;
 import fiap.tds.entities.objects.Alerta;
-import fiap.tds.entities.objects.Trilho;
 import fiap.tds.infrastructure.DatabaseConfig;
 
 import java.sql.SQLException;
@@ -20,7 +19,7 @@ public class AlertaRepository implements _CrudRepository<Alerta>{
             var stmt = connection.prepareStatement(query);
             stmt.setInt(1, object.getId());
             stmt.setString(2, object.getTipoAlerta().toString());
-            stmt.setString(3, object.getLocalizacao().toString());
+            stmt.setString(3, object.getLocalizacao());
             stmt.setTimestamp(4, java.sql.Timestamp.valueOf(object.getDataHora().withSecond(0).withNano(0).atDate(java.time.LocalDate.now())));
             stmt.setString(5, object.getDescricao());
             stmt.setBoolean(6, false);
@@ -58,12 +57,11 @@ public class AlertaRepository implements _CrudRepository<Alerta>{
                 var alerta = new Alerta();
                 alerta.setId(result.getInt("id"));
                 alerta.setTipoAlerta(TIPOS_ALERTA.valueOf(result.getString("tipoAlerta")));
-                alerta.setLocalizacao(Trilho.fromString(result.getString("localizacao")));
+                alerta.setLocalizacao(result.getString("localizacao"));
                 alerta.setDataHora(result.getTimestamp("dataHora").toLocalDateTime().toLocalTime());
                 alerta.setDescricao(result.getString("descricao"));
                 alerta.setDeleted(result.getBoolean("deleted"));
 
-                alerta.alertaInformacoes(alerta);
                 alertas.add(alerta);
             }
         } catch (SQLException e) {
@@ -84,12 +82,11 @@ public class AlertaRepository implements _CrudRepository<Alerta>{
                 var alerta = new Alerta();
                 alerta.setId(result.getInt("id"));
                 alerta.setTipoAlerta(TIPOS_ALERTA.valueOf(result.getString("tipoAlerta")));
-                alerta.setLocalizacao(Trilho.fromString(result.getString("localizacao")));
+                alerta.setLocalizacao(result.getString("localizacao"));
                 alerta.setDataHora(result.getTimestamp("dataHora").toLocalDateTime().toLocalTime());
                 alerta.setDescricao(result.getString("descricao"));
                 alerta.setDeleted(result.getBoolean("deleted"));
 
-                alerta.alertaInformacoes(alerta);
                 alertas.add(alerta);
             }
         } catch (SQLException e) {
@@ -116,12 +113,11 @@ public class AlertaRepository implements _CrudRepository<Alerta>{
                 Alerta alerta = new Alerta();
                 alerta.setId(resultSet.getInt("id"));
                 alerta.setTipoAlerta(TIPOS_ALERTA.valueOf(resultSet.getString("tipoAlerta")));
-                alerta.setLocalizacao(Trilho.fromString(resultSet.getString("localizacao")));
+                alerta.setLocalizacao(resultSet.getString("localizacao"));
                 alerta.setDescricao(resultSet.getString("descricao"));
                 alerta.setDataHora(resultSet.getTimestamp("dataHora").toLocalDateTime().toLocalTime());
                 alerta.setDeleted(resultSet.getBoolean("deleted"));
 
-                alerta.alertaInformacoes(alerta);
                 alertas.add(alerta);
 
                 return Optional.of(alerta);
