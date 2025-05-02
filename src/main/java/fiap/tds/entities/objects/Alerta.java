@@ -13,17 +13,8 @@ import java.time.LocalTime;
 
 public class Alerta extends _BaseEntity {
     private TIPOS_ALERTA tipoAlerta;
-    private Trilho localizacao;
+    private String localizacao;
     private LocalTime dataHora;
     private String descricao;
 
-    public void alertaInformacoes(Alerta alerta){
-        System.out.println("Alerta ID: " + alerta.getId());
-        System.out.println("Tipo de Alerta: " + alerta.getTipoAlerta());
-        System.out.println("Localização: " + alerta.getLocalizacao().toString());
-        System.out.println("Hora: " + alerta.getDataHora().format(java.time.format.DateTimeFormatter.ofPattern("HH:mm")));
-        System.out.println("Descrição: " + alerta.getDescricao());
-        System.out.println("Deleted: " + alerta.isDeleted());
-        System.out.println(" ");
-    }
 }

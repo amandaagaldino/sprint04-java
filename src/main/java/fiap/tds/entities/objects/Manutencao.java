@@ -18,14 +18,4 @@ public class Manutencao extends _BaseEntity{
     private String descricao;
     private TIPOS_ALERTA nivel_Alerta;
 
-
-    public void manutencaoInformacoes(Manutencao manutencao){
-        System.out.println("Manutenção ID: " + manutencao.getId());
-        System.out.println("Local: " + manutencao.getLocal());
-        System.out.println("Data: " + manutencao.getData_Hora());
-        System.out.println("Descrição: " + manutencao.getDescricao());
-        System.out.println("Tipo de Alerta: " + manutencao.getNivel_Alerta());
-        System.out.println("Deleted: " + manutencao.isDeleted());
-        System.out.println(" ");
-    }
 }
