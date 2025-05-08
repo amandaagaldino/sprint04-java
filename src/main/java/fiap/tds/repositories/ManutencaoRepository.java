@@ -68,7 +68,6 @@ public class ManutencaoRepository implements _CrudRepository<Manutencao>{
                 manutencao.setDescricao(result.getString("descricao"));
                 manutencao.setDeleted(result.getBoolean("deleted"));
                 manutencoes.add(manutencao);
-                manutencao.manutencaoInformacoes(manutencao);
             }
         } catch (SQLException e){
             System.out.println("Erro ao buscar histórico de manutenções");
@@ -93,7 +92,6 @@ public class ManutencaoRepository implements _CrudRepository<Manutencao>{
                 manutencao.setDescricao(result.getString("descricao"));
                 manutencao.setDeleted(result.getBoolean("deleted"));
                 manutencoes.add(manutencao);
-                manutencao.manutencaoInformacoes(manutencao);
             }
         } catch (SQLException e) {
             System.out.println("Erro ao buscar histórico de manutenções não deletadas");
@@ -123,7 +121,6 @@ public class ManutencaoRepository implements _CrudRepository<Manutencao>{
                 manutencao.setData_Hora(resultSet.getDate("data_Hora").toLocalDate());
                 manutencao.setDescricao(resultSet.getString("descricao"));
                 manutencao.setDeleted(resultSet.getBoolean("deleted"));
-                manutencao.manutencaoInformacoes(manutencao);
                 manutencoes.add(manutencao);
             }
 
@@ -136,104 +133,5 @@ public class ManutencaoRepository implements _CrudRepository<Manutencao>{
 
     }
 
-    //==================================================
-    // Auxiliar para capturar a data e hora
-    private static LocalDate solicitarData(Scanner scan) {
-        LocalDate data = null;
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-
-        while (data == null) {
-            try {
-                System.out.println("Informe a Data e Hora da Manutenção (formato: dd/MM/yyyy): ");
-                if (scan.hasNextLine()) {
-                    scan.nextLine(); // Limpa buffer antes de ler   a entrada
-                }
-                String entrada = scan.nextLine().trim();
-                data = LocalDate.parse(entrada, formatter); // Conversão para LocalDate
-            } catch (Exception e) {
-                System.out.println("Entrada inválida! Certifique-se de usar o formato correto: dd/MM/yyyy.");
-            }
-        }
-
-        return data;
-    }
-
-    // Formatter para o padrão "dd/MM/yyyy"
-    static DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-
-    // Gerar a data atual automaticamente
-    static LocalDate dataAtual = LocalDate.now();
-
-
-    public static Logger LOGGER = LogManager.getLogger(Manutencao.class);
-
-
-    //Agendamento da manutenção
-    public static void createManutencao(ManutencaoRepository manutencaoRepository){
-        try {
-            var scan = new Scanner(System.in);
-
-            System.out.println("Id da manutenção: ");
-            var id = scan.nextLine();
-
-            System.out.println("Localização do trilho: ");
-            var trilho = scan.nextLine();
-
-            System.out.println("Descrição do problema: ");
-            var descricao = scan.nextLine();
-
-            System.out.println("NIVEL_1,   //Monitoramento Regular\n" + //Manutenção regular pode marcar o dia
-                    "NIVEL_2,   //Alerta Preventivo\n" +    //Manutenção preventiva pode marcar o dia
-                    "NIVEL_3,   //Alerta de Atenção\n" +    //Os restantes das manutenções por serem urgentes, a manutenção é na hora da criação
-                    "NIVEL_4,   //Alerta Crítico\n" +
-                    "NIVEL_5    //Alerta de Emergência\n");
-
-            System.out.println("Nível Alerta (1-5): ");
-            var nivelAlerta = scan.nextInt();
-
-            switch (nivelAlerta){
-                case 1:
-                    // Captura de data e hora da manutenção com validação
-                    var dataHoraManutencao1 = solicitarData(scan);
-                    var manutencao1 = new Manutencao(trilho, dataHoraManutencao1, descricao, TIPOS_ALERTA.NIVEL_1);
-                    manutencao1.setId(Integer.parseInt(id));
-                    manutencao1.manutencaoInformacoes(manutencao1);
-                    manutencaoRepository.add(manutencao1);
-
-                    break;
-                case 2:
-                    // Captura de data e hora da manutenção com validação
-                    var dataHoraManutencao2 = solicitarData(scan);
-                    var manutencao2 = new Manutencao(trilho, dataHoraManutencao2, descricao, TIPOS_ALERTA.NIVEL_2);
-                    manutencao2.setId(Integer.parseInt(id));
-                    manutencao2.manutencaoInformacoes(manutencao2);
-                    manutencaoRepository.add(manutencao2);
-                    break;
-                case 3:
-                    var manutencao3 = new Manutencao(trilho, dataAtual, descricao, TIPOS_ALERTA.NIVEL_3);
-                    manutencao3.setId(Integer.parseInt(id));
-                    manutencao3.manutencaoInformacoes(manutencao3);
-                    manutencaoRepository.add(manutencao3);
-                    break;
-                case 4:
-                    var manutencao4 = new Manutencao(trilho, dataAtual, descricao, TIPOS_ALERTA.NIVEL_5);
-                    manutencao4.setId(Integer.parseInt(id));
-                    manutencao4.manutencaoInformacoes(manutencao4);
-                    manutencaoRepository.add(manutencao4);
-                    break;
-                case 5:
-                    var manutencao5 = new Manutencao(trilho, dataAtual, descricao, TIPOS_ALERTA.NIVEL_5);
-                    manutencao5.setId(Integer.parseInt(id));
-                    manutencao5.manutencaoInformacoes(manutencao5);
-                    manutencaoRepository.add(manutencao5);
-                    break;
-                default:
-                    System.out.println("Opção inválida");
-            }
-
-        } catch (Exception e){
-            LOGGER.error("Erro no agendamento da manutenção", e);
-        }
-    }
 
 }
