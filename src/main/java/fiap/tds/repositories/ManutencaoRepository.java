@@ -20,7 +20,7 @@ public class ManutencaoRepository implements _CrudRepository<Manutencao>{
 
     @Override
     public void add(Manutencao object) {
-        var query = "Insert into \"MANUTENCAO\"(id, local, data_Hora, descricao, nivel_Alerta, deleted) values (?, ?, ?, ?, ?, ?)";
+        var query = "Insert into \"T_TT_MANUTENCAO\"(id, local, data_Hora, descricao, nivel_Alerta, deleted) values (?, ?, ?, ?, ?, ?)";
         try (var connection = DatabaseConfig.getConnection()) {
             var stmt = connection.prepareStatement(query);
             stmt.setInt(1, object.getId());
@@ -39,7 +39,7 @@ public class ManutencaoRepository implements _CrudRepository<Manutencao>{
 
     @Override
     public void deleteById(int id) {
-        var query = "UPDATE \"MANUTENCAO\" SET deleted = ? WHERE id = ?";
+        var query = "UPDATE \"T_TT_MANUTENCAO\" SET deleted = ? WHERE id = ?";
         try (var connection = DatabaseConfig.getConnection()) {
             var stmt = connection.prepareStatement(query);
             stmt.setInt(1, 1); // Define 1 como verdadeiro para a coluna "deleted"
@@ -55,7 +55,7 @@ public class ManutencaoRepository implements _CrudRepository<Manutencao>{
     @Override
     public List<Manutencao> getAll() {
         var manutencoes = new ArrayList<Manutencao>();
-        var query = "Select * FROM \"MANUTENCAO\"";
+        var query = "Select * FROM \"T_TT_MANUTENCAO\"";
         try (var connection = DatabaseConfig.getConnection()){
             var stmt = connection.prepareStatement(query);
             var result = stmt.executeQuery();
@@ -79,7 +79,7 @@ public class ManutencaoRepository implements _CrudRepository<Manutencao>{
     @Override
     public List<Manutencao> get() {
         var manutencoes = new ArrayList<Manutencao>();
-        var query = "SELECT * FROM \"MANUTENCAO\" WHERE deleted = 0";
+        var query = "SELECT * FROM \"T_TT_MANUTENCAO\" WHERE deleted = 0";
         try (var connection = DatabaseConfig.getConnection()) {
             var stmt = connection.prepareStatement(query);
             var result = stmt.executeQuery();
@@ -102,7 +102,7 @@ public class ManutencaoRepository implements _CrudRepository<Manutencao>{
 
     @Override
     public Optional<Manutencao> getById(int id) {
-        var query = "SELECT * from \"MANUTENCAO\" where id = ?";
+        var query = "SELECT * from \"T_TT_MANUTENCAO\" where id = ?";
         try (var connection = DatabaseConfig.getConnection();
              var preparedStatement = connection.prepareStatement(query)) {
 

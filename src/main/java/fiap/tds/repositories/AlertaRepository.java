@@ -14,7 +14,7 @@ public class AlertaRepository implements _CrudRepository<Alerta>{
 
     @Override
     public void add(Alerta object) {
-        var query = "Insert into \"Alerta\"(id, tipoAlerta, localizacao, dataHora, descricao, deleted) values (?, ?, ?, ?, ?, ?)";
+        var query = "Insert into \"T_TT_ALERTA\"(id, tipoAlerta, localizacao, dataHora, descricao, deleted) values (?, ?, ?, ?, ?, ?)";
         try (var connection = DatabaseConfig.getConnection()) {
             var stmt = connection.prepareStatement(query);
             stmt.setInt(1, object.getId());
@@ -33,7 +33,7 @@ public class AlertaRepository implements _CrudRepository<Alerta>{
 
     @Override
     public void deleteById(int id) {
-        var query = "UPDATE \"Alerta\" SET deleted = ? WHERE id = ?";
+        var query = "UPDATE \"T_TT_ALERTA\" SET deleted = ? WHERE id = ?";
         try (var connection = DatabaseConfig.getConnection()) {
             var stmt = connection.prepareStatement(query);
             stmt.setInt(1, 1); // Define 1 como verdadeiro para a coluna "deleted"
@@ -49,7 +49,7 @@ public class AlertaRepository implements _CrudRepository<Alerta>{
     @Override
     public List<Alerta> getAll() {
         var alertas = new ArrayList<Alerta>();
-        var query = "SELECT * FROM \"Alerta\"";
+        var query = "SELECT * FROM \"T_TT_ALERTA\"";
         try (var connection = DatabaseConfig.getConnection()) {
             var stmt = connection.prepareStatement(query);
             var result = stmt.executeQuery();
@@ -74,7 +74,7 @@ public class AlertaRepository implements _CrudRepository<Alerta>{
     @Override
     public List<Alerta> get() {
         var alertas = new ArrayList<Alerta>();
-        var query = "SELECT * FROM \"Alerta\" WHERE deleted = 0";
+        var query = "SELECT * FROM \"T_TT_ALERTA\" WHERE deleted = 0";
         try (var connection = DatabaseConfig.getConnection()) {
             var stmt = connection.prepareStatement(query);
             var result = stmt.executeQuery();
@@ -98,7 +98,7 @@ public class AlertaRepository implements _CrudRepository<Alerta>{
 
     @Override
     public Optional<Alerta> getById(int id) {
-        var query = "SELECT * from \"Alerta\" where id = ?";
+        var query = "SELECT * from \"T_TT_ALERTA\" where id = ?";
         try (var connection = DatabaseConfig.getConnection();
              var preparedStatement = connection.prepareStatement(query)) {
 
