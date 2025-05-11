@@ -15,7 +15,7 @@ public class LinhaRepository {
 
 
     public List<Linha> getAll() {
-        var query = "SELECT * FROM \"T_TT_LINHA\"";
+        var query = "SELECT * FROM \"T_TT_LINHA_METRO\"";
         try (var connection = DatabaseConfig.getConnection()) {
             var stmt = connection.prepareStatement(query);
             var result = stmt.executeQuery();
@@ -24,8 +24,8 @@ public class LinhaRepository {
                 linha.setId(result.getInt("id"));
                 linha.setNome_linha(result.getString("nome_linha"));
                 linha.setNumero_linha(result.getInt("numero_linha"));
-                linha.setLocalizacao_inicial(result.getString("localizacao_inicial"));
-                linha.setSituacaa_atual(result.getString("situacao_atual"));
+//                linha.setLocalizacao_inicial(result.getString("localizacao_inicial"));   NAO VAI TER NO FRONT
+//                linha.setSituacaa_atual(result.getString("situacao_atual"));
 
 
                 linhas.add(linha);
@@ -39,7 +39,7 @@ public class LinhaRepository {
 
 
     public Optional<Alerta> getById(int id) {
-        var query = "SELECT * from \"T_TT_LINHA\" where id = ?";
+        var query = "SELECT * from \"T_TT_LINHA_METRO\" where id = ?";
         try (var connection = DatabaseConfig.getConnection();
              var preparedStatement = connection.prepareStatement(query)) {
 
@@ -55,8 +55,8 @@ public class LinhaRepository {
                 linha.setId(result.getInt("id"));
                 linha.setNome_linha(result.getString("nome_linha"));
                 linha.setNumero_linha(result.getInt("numero_linha"));
-                linha.setLocalizacao_inicial(result.getString("localizacao_inicial"));
-                linha.setSituacaa_atual(result.getString("situacao_atual"));
+//                linha.setLocalizacao_inicial(result.getString("localizacao_inicial"));
+//                linha.setSituacaa_atual(result.getString("situacao_atual"));
 
                 linhas.add(linha);
 
