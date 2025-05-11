@@ -1,4 +1,6 @@
 package fiap.tds.Dtos;
 
-public record LoginDto(String id,
-                       String senha) {}
+public class LoginDto {
+    public String id;
+    public String senha;
+}
