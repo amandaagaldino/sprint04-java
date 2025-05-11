@@ -134,4 +134,49 @@ public class ManutencaoRepository implements _CrudRepository<Manutencao>{
     }
 
 
+    public List<Manutencao> search(Optional<String> local, Optional<String> descricao, Optional<String> orderby) {
+        StringBuilder query = new StringBuilder("SELECT * FROM \"T_TT_MANUTENCAO\" WHERE deleted = 0");
+
+        if (local.isPresent()) query.append(" AND LOWER(local) LIKE ?");
+        if (descricao.isPresent()) query.append(" AND LOWER(descricao) LIKE ?");
+
+        if (orderby.isPresent()) {
+            switch (orderby.get()) {
+                case "local" -> query.append(" ORDER BY local");
+                case "descricao" -> query.append(" ORDER BY descricao");
+                case "data" -> query.append(" ORDER BY data_Hora");
+                default -> query.append(" ORDER BY id");
+            }
+        } else {
+            query.append(" ORDER BY id");
+        }
+
+        var results = new ArrayList<Manutencao>();
+        try (var conn = DatabaseConfig.getConnection();
+             var stmt = conn.prepareStatement(query.toString())) {
+
+            int paramIndex = 1;
+            if (local.isPresent()) stmt.setString(paramIndex++, "%" + local.get().toLowerCase() + "%");
+            if (descricao.isPresent()) stmt.setString(paramIndex++, "%" + descricao.get().toLowerCase() + "%");
+
+            var resultSet = stmt.executeQuery();
+            while (resultSet.next()) {
+                Manutencao m = new Manutencao();
+                m.setId(resultSet.getInt("id"));
+                m.setLocal(resultSet.getString("local"));
+                m.setDescricao(resultSet.getString("descricao"));
+                m.setData_Hora(resultSet.getDate("data_Hora").toLocalDate());
+                m.setNivel_Alerta(TIPOS_ALERTA.valueOf(resultSet.getString("Nivel_Alerta")));
+                m.setDeleted(resultSet.getBoolean("deleted"));
+                results.add(m);
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return results;
+    }
+
+
 }
