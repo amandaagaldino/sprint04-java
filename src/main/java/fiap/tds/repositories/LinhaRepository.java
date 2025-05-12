@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.Optional;
 
 public class LinhaRepository {
-    List<Linha> linhas = new ArrayList<>();
+    List<Linha> linhas = new ArrayList<Linha>();
 
 
     public List<Linha> getAll() {
@@ -21,17 +21,14 @@ public class LinhaRepository {
             var result = stmt.executeQuery();
             while (result.next()){
                 var linha = new Linha();
-                linha.setId(result.getInt("id"));
-                linha.setNome_linha(result.getString("nome_linha"));
-                linha.setNumero_linha(result.getInt("numero_linha"));
-//                linha.setLocalizacao_inicial(result.getString("localizacao_inicial"));   NAO VAI TER NO FRONT
-//                linha.setSituacaa_atual(result.getString("situacao_atual"));
+                linha.setId(result.getInt("id_linha"));
+                linha.setNome_linha(result.getString("nm_linha"));
 
 
                 linhas.add(linha);
             }
         } catch (SQLException e) {
-            System.out.println("Erro ao buscar os alertas no banco de dados");
+            System.out.println("Erro ao buscar as linhas no banco de dados");
             e.printStackTrace();
         }
         return linhas;
@@ -52,11 +49,9 @@ public class LinhaRepository {
             // Se encontrar um resultado, cria o objeto Alerta e retorna
             if (result.next()) {
                 var linha = new Linha();
-                linha.setId(result.getInt("id"));
-                linha.setNome_linha(result.getString("nome_linha"));
-                linha.setNumero_linha(result.getInt("numero_linha"));
-//                linha.setLocalizacao_inicial(result.getString("localizacao_inicial"));
-//                linha.setSituacaa_atual(result.getString("situacao_atual"));
+                linha.setId(result.getInt("id_linha"));
+                linha.setNome_linha(result.getString("nm_linha"));
+
 
                 linhas.add(linha);
 

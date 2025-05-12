@@ -10,11 +10,11 @@ import java.util.List;
 import java.util.Optional;
 
 public class AlertaRepository implements _CrudRepository<Alerta>{
-    List<Alerta> alertas = new ArrayList<>();
+    List<Alerta> alertas = new ArrayList<Alerta>();
 
     @Override
     public void add(Alerta object) {
-        var query = "Insert into \"T_TT_ALERTA\"(id, tipoAlerta, localizacao, dataHora, descricao, deleted) values (?, ?, ?, ?, ?, ?)";
+        var query = "Insert into \"T_TT_ALERTA\"(id_alerta , tipo_alerta, localizacao, dt_hr_alerta, des_alerta) values (?, ?, ?, ?, ?)";
         try (var connection = DatabaseConfig.getConnection()) {
             var stmt = connection.prepareStatement(query);
             stmt.setInt(1, object.getId());
@@ -22,7 +22,6 @@ public class AlertaRepository implements _CrudRepository<Alerta>{
             stmt.setString(3, object.getLocalizacao());
             stmt.setTimestamp(4, java.sql.Timestamp.valueOf(object.getDataHora().withSecond(0).withNano(0).atDate(java.time.LocalDate.now())));
             stmt.setString(5, object.getDescricao());
-            stmt.setBoolean(6, false);
             stmt.executeUpdate();
         }
         catch (SQLException e){
@@ -33,18 +32,18 @@ public class AlertaRepository implements _CrudRepository<Alerta>{
 
     @Override
     public void deleteById(int id) {
-        var query = "UPDATE \"T_TT_ALERTA\" SET deleted = ? WHERE id = ?";
-        try (var connection = DatabaseConfig.getConnection()) {
-            var stmt = connection.prepareStatement(query);
-            stmt.setInt(1, 1); // Define 1 como verdadeiro para a coluna "deleted"
-            stmt.setInt(2, id); // Define o ID do alerta
-            stmt.executeUpdate();
-            System.out.println("Alerta marcado como deletado.");
-        } catch (SQLException e) {
-            System.out.println("Erro ao marcar o alerta como deletado no banco de dados");
-            e.printStackTrace();
-        }
-    }
+//        var query = "UPDATE \"T_TT_ALERTA\" SET deleted = ? WHERE id = ?";
+//        try (var connection = DatabaseConfig.getConnection()) {
+//            var stmt = connection.prepareStatement(query);
+//            stmt.setInt(1, 1); // Define 1 como verdadeiro para a coluna "deleted"
+//            stmt.setInt(2, id); // Define o ID do alerta
+//            stmt.executeUpdate();
+//            System.out.println("Alerta marcado como deletado.");
+//        } catch (SQLException e) {
+//            System.out.println("Erro ao marcar o alerta como deletado no banco de dados");
+//            e.printStackTrace();
+//        }
+   }
 
     @Override
     public List<Alerta> getAll() {
@@ -55,12 +54,11 @@ public class AlertaRepository implements _CrudRepository<Alerta>{
             var result = stmt.executeQuery();
             while (result.next()){
                 var alerta = new Alerta();
-                alerta.setId(result.getInt("id"));
-                alerta.setTipoAlerta(TIPOS_ALERTA.valueOf(result.getString("tipoAlerta")));
+                alerta.setId(result.getInt("id_alerta"));
+                alerta.setTipoAlerta(TIPOS_ALERTA.valueOf(result.getString("tipo_alerta")));
                 alerta.setLocalizacao(result.getString("localizacao"));
-                alerta.setDataHora(result.getTimestamp("dataHora").toLocalDateTime().toLocalTime());
-                alerta.setDescricao(result.getString("descricao"));
-                alerta.setDeleted(result.getBoolean("deleted"));
+                alerta.setDataHora(result.getTimestamp("dt_hr_alerta").toLocalDateTime().toLocalTime());
+                alerta.setDescricao(result.getString("des_alerta"));
 
                 alertas.add(alerta);
             }
@@ -71,30 +69,6 @@ public class AlertaRepository implements _CrudRepository<Alerta>{
         return alertas;
     }
 
-    @Override
-    public List<Alerta> get() {
-        var alertas = new ArrayList<Alerta>();
-        var query = "SELECT * FROM \"T_TT_ALERTA\" WHERE deleted = 0";
-        try (var connection = DatabaseConfig.getConnection()) {
-            var stmt = connection.prepareStatement(query);
-            var result = stmt.executeQuery();
-            while (result.next()) {
-                var alerta = new Alerta();
-                alerta.setId(result.getInt("id"));
-                alerta.setTipoAlerta(TIPOS_ALERTA.valueOf(result.getString("tipoAlerta")));
-                alerta.setLocalizacao(result.getString("localizacao"));
-                alerta.setDataHora(result.getTimestamp("dataHora").toLocalDateTime().toLocalTime());
-                alerta.setDescricao(result.getString("descricao"));
-                alerta.setDeleted(result.getBoolean("deleted"));
-
-                alertas.add(alerta);
-            }
-        } catch (SQLException e) {
-            System.out.println("Erro ao buscar os alertas não deletados no banco de dados");
-            e.printStackTrace();
-        }
-        return alertas;
-    }
 
     @Override
     public Optional<Alerta> getById(int id) {
@@ -106,17 +80,16 @@ public class AlertaRepository implements _CrudRepository<Alerta>{
             preparedStatement.setInt(1, id);
 
             // Executar a consulta ao banco
-            var resultSet = preparedStatement.executeQuery();
+            var result = preparedStatement.executeQuery();
 
             // Se encontrar um resultado, cria o objeto Alerta e retorna
-            if (resultSet.next()) {
+            if (result.next()) {
                 Alerta alerta = new Alerta();
-                alerta.setId(resultSet.getInt("id"));
-                alerta.setTipoAlerta(TIPOS_ALERTA.valueOf(resultSet.getString("tipoAlerta")));
-                alerta.setLocalizacao(resultSet.getString("localizacao"));
-                alerta.setDescricao(resultSet.getString("descricao"));
-                alerta.setDataHora(resultSet.getTimestamp("dataHora").toLocalDateTime().toLocalTime());
-                alerta.setDeleted(resultSet.getBoolean("deleted"));
+                alerta.setId(result.getInt("id_alerta"));
+                alerta.setTipoAlerta(TIPOS_ALERTA.valueOf(result.getString("tipo_alerta")));
+                alerta.setLocalizacao(result.getString("localizacao"));
+                alerta.setDataHora(result.getTimestamp("dt_hr_alerta").toLocalDateTime().toLocalTime());
+                alerta.setDescricao(result.getString("des_alerta"));
 
                 alertas.add(alerta);
 

@@ -16,19 +16,18 @@ import java.util.Optional;
 import java.util.Scanner;
 
 public class ManutencaoRepository implements _CrudRepository<Manutencao>{
-    List<Manutencao> manutencoes = new ArrayList<>();
+    List<Manutencao> manutencoes = new ArrayList<Manutencao>();
 
     @Override
     public void add(Manutencao object) {
-        var query = "Insert into \"T_TT_MANUTENCAO\"(id, local, data_Hora, descricao, nivel_Alerta, deleted) values (?, ?, ?, ?, ?, ?)";
+        var query = "Insert into \"T_TT_MANUTENCAO\"(id_manutencao, local, dt_manutencao, des_manutencao, nivel_alerta) values (?, ?, ?, ?, ?)";
         try (var connection = DatabaseConfig.getConnection()) {
             var stmt = connection.prepareStatement(query);
             stmt.setInt(1, object.getId());
             stmt.setString(2, object.getLocal());
-            stmt.setTimestamp(3, java.sql.Timestamp.valueOf(object.getData_Hora().atStartOfDay()));
+            stmt.setTimestamp(3, java.sql.Timestamp.valueOf(object.getData_hora().atStartOfDay()));
             stmt.setString(4, object.getDescricao());
             stmt.setString(5, object.getNivel_Alerta().toString());
-            stmt.setBoolean(6, false);
             stmt.executeUpdate();
         }
         catch (SQLException e){
@@ -39,17 +38,17 @@ public class ManutencaoRepository implements _CrudRepository<Manutencao>{
 
     @Override
     public void deleteById(int id) {
-        var query = "UPDATE \"T_TT_MANUTENCAO\" SET deleted = ? WHERE id = ?";
-        try (var connection = DatabaseConfig.getConnection()) {
-            var stmt = connection.prepareStatement(query);
-            stmt.setInt(1, 1); // Define 1 como verdadeiro para a coluna "deleted"
-            stmt.setInt(2, id); // Define o ID do alerta
-            stmt.executeUpdate();
-            System.out.println("Manutenção marcada como deletada.");
-        } catch (SQLException e) {
-            System.out.println("Erro ao marcar o manutenção como deletada no banco de dados");
-            e.printStackTrace();
-        }
+//        var query = "UPDATE \"T_TT_MANUTENCAO\" SET deleted = ? WHERE id = ?";
+//        try (var connection = DatabaseConfig.getConnection()) {
+//            var stmt = connection.prepareStatement(query);
+//            stmt.setInt(1, 1); // Define 1 como verdadeiro para a coluna "deleted"
+//            stmt.setInt(2, id); // Define o ID do alerta
+//            stmt.executeUpdate();
+//            System.out.println("Manutenção marcada como deletada.");
+//        } catch (SQLException e) {
+//            System.out.println("Erro ao marcar o manutenção como deletada no banco de dados");
+//            e.printStackTrace();
+//        }
     }
 
     @Override
@@ -61,12 +60,11 @@ public class ManutencaoRepository implements _CrudRepository<Manutencao>{
             var result = stmt.executeQuery();
             while(result.next()){
                 var manutencao = new Manutencao();
-                manutencao.setId(result.getInt("id"));
-                manutencao.setNivel_Alerta(TIPOS_ALERTA.valueOf(result.getString("Nivel_Alerta")));
+                manutencao.setId(result.getInt("id_manutencao"));
                 manutencao.setLocal(result.getString("local"));
-                manutencao.setData_Hora(result.getDate("data_Hora").toLocalDate());
-                manutencao.setDescricao(result.getString("descricao"));
-                manutencao.setDeleted(result.getBoolean("deleted"));
+                manutencao.setData_hora(result.getDate("dt_manutencao").toLocalDate());
+                manutencao.setDescricao(result.getString("des_manutencao"));
+                manutencao.setNivel_Alerta(TIPOS_ALERTA.valueOf(result.getString("nivel_alerta")));
                 manutencoes.add(manutencao);
             }
         } catch (SQLException e){
@@ -76,29 +74,6 @@ public class ManutencaoRepository implements _CrudRepository<Manutencao>{
         return manutencoes;
     }
 
-    @Override
-    public List<Manutencao> get() {
-        var manutencoes = new ArrayList<Manutencao>();
-        var query = "SELECT * FROM \"T_TT_MANUTENCAO\" WHERE deleted = 0";
-        try (var connection = DatabaseConfig.getConnection()) {
-            var stmt = connection.prepareStatement(query);
-            var result = stmt.executeQuery();
-            while (result.next()) {
-                var manutencao = new Manutencao();
-                manutencao.setId(result.getInt("id"));
-                manutencao.setNivel_Alerta(TIPOS_ALERTA.valueOf(result.getString("Nivel_Alerta")));
-                manutencao.setLocal(result.getString("local"));
-                manutencao.setData_Hora(result.getDate("data_Hora").toLocalDate());
-                manutencao.setDescricao(result.getString("descricao"));
-                manutencao.setDeleted(result.getBoolean("deleted"));
-                manutencoes.add(manutencao);
-            }
-        } catch (SQLException e) {
-            System.out.println("Erro ao buscar histórico de manutenções não deletadas");
-            e.printStackTrace();
-        }
-        return manutencoes;
-    }
 
     @Override
     public Optional<Manutencao> getById(int id) {
@@ -110,17 +85,16 @@ public class ManutencaoRepository implements _CrudRepository<Manutencao>{
             preparedStatement.setInt(1, id);
 
             // Executar a consulta ao banco
-            var resultSet = preparedStatement.executeQuery();
+            var result = preparedStatement.executeQuery();
 
             // Se encontrar um resultado, cria o objeto Alerta e retorna
-            if (resultSet.next()) {
+            if (result.next()) {
                 Manutencao manutencao = new Manutencao();
-                manutencao.setId(resultSet.getInt("id"));
-                manutencao.setLocal(resultSet.getString("local"));
-                manutencao.setNivel_Alerta(TIPOS_ALERTA.valueOf(resultSet.getString("Nivel_Alerta")));
-                manutencao.setData_Hora(resultSet.getDate("data_Hora").toLocalDate());
-                manutencao.setDescricao(resultSet.getString("descricao"));
-                manutencao.setDeleted(resultSet.getBoolean("deleted"));
+                manutencao.setId(result.getInt("id_manutencao"));
+                manutencao.setLocal(result.getString("local"));
+                manutencao.setData_hora(result.getDate("dt_manutencao").toLocalDate());
+                manutencao.setDescricao(result.getString("des_manutencao"));
+                manutencao.setNivel_Alerta(TIPOS_ALERTA.valueOf(result.getString("nivel_alerta")));
                 manutencoes.add(manutencao);
             }
 
@@ -162,12 +136,11 @@ public class ManutencaoRepository implements _CrudRepository<Manutencao>{
             var resultSet = stmt.executeQuery();
             while (resultSet.next()) {
                 Manutencao m = new Manutencao();
-                m.setId(resultSet.getInt("id"));
+                m.setId(resultSet.getInt("id_manutencao"));
                 m.setLocal(resultSet.getString("local"));
-                m.setDescricao(resultSet.getString("descricao"));
-                m.setData_Hora(resultSet.getDate("data_Hora").toLocalDate());
-                m.setNivel_Alerta(TIPOS_ALERTA.valueOf(resultSet.getString("Nivel_Alerta")));
-                m.setDeleted(resultSet.getBoolean("deleted"));
+                m.setDescricao(resultSet.getString("des_manutencao"));
+                m.setData_hora(resultSet.getDate("dt_manutencao").toLocalDate());
+                m.setNivel_Alerta(TIPOS_ALERTA.valueOf(resultSet.getString("nivel_alerta")));
                 results.add(m);
             }
 

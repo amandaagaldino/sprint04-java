@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.Optional;
 
 public class EstacaoRepository {
-    List<Estacao> estacaos = new ArrayList<>();
+    List<Estacao> estacaos = new ArrayList<Estacao>();
 
     public List<Estacao> getAll() {
         var query = "SELECT * FROM \"T_TT_ESTACAO\"";
@@ -20,8 +20,8 @@ public class EstacaoRepository {
             var result = stmt.executeQuery();
             while (result.next()){
                 var estacao = new Estacao();
-                estacao.setId(result.getInt("id"));
-                estacao.setNome(result.getString("nome"));
+                estacao.setId(result.getInt("id_estacao"));
+                estacao.setNome(result.getString("nm_estacao"));
                 estacao.setId_linha(result.getInt("id_linha"));
 
 
@@ -49,8 +49,8 @@ public class EstacaoRepository {
             // Se encontrar um resultado, cria o objeto Alerta e retorna
             if (result.next()) {
                 Estacao estacao = new Estacao();
-                estacao.setId(result.getInt("id"));
-                estacao.setNome(result.getString("nome"));
+                estacao.setId(result.getInt("id_estacao"));
+                estacao.setNome(result.getString("nm_estacao"));
                 estacao.setId_linha(result.getInt("id_linha"));
 
                estacaos.add(estacao);
