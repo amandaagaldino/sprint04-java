@@ -38,17 +38,16 @@ public class ManutencaoRepository implements _CrudRepository<Manutencao>{
 
     @Override
     public void deleteById(int id) {
-//        var query = "UPDATE \"T_TT_MANUTENCAO\" SET deleted = ? WHERE id = ?";
-//        try (var connection = DatabaseConfig.getConnection()) {
-//            var stmt = connection.prepareStatement(query);
-//            stmt.setInt(1, 1); // Define 1 como verdadeiro para a coluna "deleted"
-//            stmt.setInt(2, id); // Define o ID do alerta
-//            stmt.executeUpdate();
-//            System.out.println("Manutenção marcada como deletada.");
-//        } catch (SQLException e) {
-//            System.out.println("Erro ao marcar o manutenção como deletada no banco de dados");
-//            e.printStackTrace();
-//        }
+        var query = "DELETE FROM T_TT_MANUTENCAO WHERE id_manutencao = ?";
+        try (var connection = DatabaseConfig.getConnection()) {
+            var stmt = connection.prepareStatement(query);
+            stmt.setInt(1, id);
+            stmt.executeUpdate();
+            System.out.println("Manutenção deletada fisicamente do banco de dados.");
+        } catch (SQLException e) {
+            System.out.println("Erro ao deletar a manutenção do banco de dados");
+            e.printStackTrace();
+        }
     }
 
     @Override

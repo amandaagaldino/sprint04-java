@@ -32,17 +32,16 @@ public class AlertaRepository implements _CrudRepository<Alerta>{
 
     @Override
     public void deleteById(int id) {
-//        var query = "UPDATE \"T_TT_ALERTA\" SET deleted = ? WHERE id = ?";
-//        try (var connection = DatabaseConfig.getConnection()) {
-//            var stmt = connection.prepareStatement(query);
-//            stmt.setInt(1, 1); // Define 1 como verdadeiro para a coluna "deleted"
-//            stmt.setInt(2, id); // Define o ID do alerta
-//            stmt.executeUpdate();
-//            System.out.println("Alerta marcado como deletado.");
-//        } catch (SQLException e) {
-//            System.out.println("Erro ao marcar o alerta como deletado no banco de dados");
-//            e.printStackTrace();
-//        }
+        var query = "DELETE FROM T_TT_ALERTA WHERE id_alerta = ?";
+        try (var connection = DatabaseConfig.getConnection()) {
+            var stmt = connection.prepareStatement(query);
+            stmt.setInt(1, id);
+            stmt.executeUpdate();
+            System.out.println("Alerta deletado fisicamente do banco de dados.");
+        } catch (SQLException e) {
+            System.out.println("Erro ao deletar o alerta do banco de dados");
+            e.printStackTrace();
+        }
    }
 
     @Override
