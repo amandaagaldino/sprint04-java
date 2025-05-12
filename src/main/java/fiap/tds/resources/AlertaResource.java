@@ -8,7 +8,7 @@ import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 
 @Path("/alerta")
-public class AlertaResource {
+public class  AlertaResource {
 
     public AlertaRepository alertaRepository = new AlertaRepository();
 

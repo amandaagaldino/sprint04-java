@@ -20,38 +20,37 @@ public class ManutencaoResource {
 
     public ManutencaoRepository manutencaoRepository = new ManutencaoRepository();
 
-    @GET
-    @Path("/search") //
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response search(
-            @QueryParam("local") Optional<String> local,
-            @QueryParam("descricao") Optional<String> descricao,
-            @QueryParam("page") @DefaultValue("1") int page,
-            @QueryParam("order") Optional<String> orderby
-    ) {
-        var resultados = manutencaoRepository.search(local, descricao, orderby);
-        int total = resultados.size();
-
-        int start = (page - 1) * PAGE_SIZE;
-        int end = Math.min(start + PAGE_SIZE, total);
-
-        if (start >= total && total > 0)
-            return Response.status(Response.Status.BAD_REQUEST).build();
-
-        List<Manutencao> pagina = resultados.subList(start, end)
-                .stream()
-                .map(m -> new Manutencao(
-                        m.getId(),
-                        m.isDeleted(),
-                        m.getLocal(),
-                        m.getData_Hora(),
-                        m.getDescricao(),
-                        m.getNivel_Alerta()))
-                .toList();
-
-        var responseDto = new SearchManutencaoDto(page, total, orderby, pagina);
-        return Response.ok(responseDto).build();
-    }
+//    @GET
+//    @Path("/search") //
+//    @Produces(MediaType.APPLICATION_JSON)
+//    public Response search(
+//            @QueryParam("local") Optional<String> local,
+//            @QueryParam("descricao") Optional<String> descricao,
+//            @QueryParam("page") @DefaultValue("1") int page,
+//            @QueryParam("order") Optional<String> orderby
+//    ) {
+//        var resultados = manutencaoRepository.search(local, descricao, orderby);
+//        int total = resultados.size();
+//
+//        int start = (page - 1) * PAGE_SIZE;
+//        int end = Math.min(start + PAGE_SIZE, total);
+//
+//        if (start >= total && total > 0)
+//            return Response.status(Response.Status.BAD_REQUEST).build();
+//
+//        List<Manutencao> pagina = resultados.subList(start, end)
+//                .stream()
+//                .map(m -> new Manutencao(
+//                        m.getId(),
+//                        m.getLocal(),
+//                        m.getData_hora(),
+//                        m.getDescricao(),
+//                        m.getNivel_Alerta()))
+//                .toList();
+//
+//        var responseDto = new SearchManutencaoDto(page, total, orderby, pagina);
+//        return Response.ok(responseDto).build();
+//    }
 
 
     @POST
