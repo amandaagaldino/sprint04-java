@@ -13,8 +13,8 @@ public class Usuario extends _BaseEntity{
     public Usuario() {
     }
 
-    public Usuario(int id, boolean deleted, String senha) {
-        super(id, deleted);
+    public Usuario(int id, String senha) {
+        super(id);
         this.senha = senha;
     }
 

@@ -12,7 +12,7 @@ import java.util.Objects;
 
 public class Manutencao extends _BaseEntity{
     private String local;
-    private LocalDate data_Hora;
+    private LocalDate data_hora;
     private String descricao;
     private TIPOS_ALERTA nivel_Alerta;
 
@@ -20,10 +20,10 @@ public class Manutencao extends _BaseEntity{
     public Manutencao() {
     }
 
-    public Manutencao(int id, boolean deleted, String local, LocalDate data_Hora, String descricao, TIPOS_ALERTA nivel_Alerta) {
-        super(id, deleted);
+    public Manutencao(int id, String local, LocalDate data_hora, String descricao, TIPOS_ALERTA nivel_Alerta) {
+        super(id);
         this.local = local;
-        this.data_Hora = data_Hora;
+        this.data_hora = data_hora;
         this.descricao = descricao;
         this.nivel_Alerta = nivel_Alerta;
     }
@@ -36,12 +36,12 @@ public class Manutencao extends _BaseEntity{
         this.local = local;
     }
 
-    public LocalDate getData_Hora() {
-        return data_Hora;
+    public LocalDate getData_hora() {
+        return data_hora;
     }
 
-    public void setData_Hora(LocalDate data_Hora) {
-        this.data_Hora = data_Hora;
+    public void setData_hora(LocalDate data_hora) {
+        this.data_hora = data_hora;
     }
 
     public String getDescricao() {
@@ -66,19 +66,19 @@ public class Manutencao extends _BaseEntity{
         if (o == null || getClass() != o.getClass()) return false;
         if (!super.equals(o)) return false;
         Manutencao that = (Manutencao) o;
-        return Objects.equals(local, that.local) && Objects.equals(data_Hora, that.data_Hora) && Objects.equals(descricao, that.descricao) && nivel_Alerta == that.nivel_Alerta;
+        return Objects.equals(local, that.local) && Objects.equals(data_hora, that.data_hora) && Objects.equals(descricao, that.descricao) && nivel_Alerta == that.nivel_Alerta;
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(super.hashCode(), local, data_Hora, descricao, nivel_Alerta);
+        return Objects.hash(super.hashCode(), local, data_hora, descricao, nivel_Alerta);
     }
 
     @Override
     public String toString() {
         return "Manutencao{" +
                 "local='" + local + '\'' +
-                ", data_Hora=" + data_Hora +
+                ", data_hora=" + data_hora +
                 ", descricao='" + descricao + '\'' +
                 ", nivel_Alerta=" + nivel_Alerta +
                 '}';

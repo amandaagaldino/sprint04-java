@@ -19,9 +19,8 @@ public class Alerta extends _BaseEntity {
     public Alerta() {
     }
 
-
-    public Alerta(int id, boolean deleted, TIPOS_ALERTA tipoAlerta, String localizacao, LocalTime dataHora, String descricao) {
-        super(id, deleted);
+    public Alerta(int id, TIPOS_ALERTA tipoAlerta, String localizacao, LocalTime dataHora, String descricao) {
+        super(id);
         this.tipoAlerta = tipoAlerta;
         this.localizacao = localizacao;
         this.dataHora = dataHora;

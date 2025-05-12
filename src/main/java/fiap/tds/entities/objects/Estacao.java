@@ -2,8 +2,7 @@ package fiap.tds.entities.objects;
 
 import java.util.Objects;
 
-public class Estacao {
-    private int id;
+public class Estacao extends _BaseEntity {
     private String nome;
     private int id_linha;
 
@@ -11,18 +10,11 @@ public class Estacao {
     public Estacao() {
     }
 
+
     public Estacao(int id, String nome, int id_linha) {
-        this.id = id;
+        super(id);
         this.nome = nome;
         this.id_linha = id_linha;
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
     }
 
     public String getNome() {
@@ -45,20 +37,20 @@ public class Estacao {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
+        if (!super.equals(o)) return false;
         Estacao estacao = (Estacao) o;
-        return id == estacao.id && id_linha == estacao.id_linha && Objects.equals(nome, estacao.nome);
+        return id_linha == estacao.id_linha && Objects.equals(nome, estacao.nome);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, nome, id_linha);
+        return Objects.hash(super.hashCode(), nome, id_linha);
     }
 
     @Override
     public String toString() {
         return "Estacao{" +
-                "id=" + id +
-                ", nome='" + nome + '\'' +
+                "nome='" + nome + '\'' +
                 ", id_linha=" + id_linha +
                 '}';
     }
