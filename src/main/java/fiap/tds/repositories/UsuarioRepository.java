@@ -28,8 +28,8 @@ public class UsuarioRepository {
                 usuario.setId(result.getInt("id_usuario"));
                 usuario.setSenha(result.getString("senha"));
 
-                usuarios.add(usuario);
-
+                //usuarios.add(usuario);
+                return Optional.of(usuario);
             }
 
         }
