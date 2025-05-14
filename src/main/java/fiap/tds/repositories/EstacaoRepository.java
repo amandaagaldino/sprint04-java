@@ -11,29 +11,6 @@ import java.util.List;
 import java.util.Optional;
 
 public class EstacaoRepository {
-    List<Estacao> estacaos = new ArrayList<Estacao>();
-
-    public List<Estacao> getAll() {
-        var query = "SELECT * FROM \"T_TT_ESTACAO\"";
-        try (var connection = DatabaseConfig.getConnection()) {
-            var stmt = connection.prepareStatement(query);
-            var result = stmt.executeQuery();
-            while (result.next()){
-                var estacao = new Estacao();
-                estacao.setId(result.getInt("id_estacao"));
-                estacao.setNome(result.getString("nm_estacao"));
-                estacao.setId_linha(result.getInt("id_linha"));
-
-
-                estacaos.add(estacao);
-            }
-        } catch (SQLException e) {
-            System.out.println("Erro ao buscar os alertas no banco de dados");
-            e.printStackTrace();
-        }
-        return estacaos;
-    }
-
 
     public Optional<Estacao> getById(int id) {
         var query = "SELECT * from \"T_TT_ESTACAO\" where id = ?";
@@ -53,7 +30,7 @@ public class EstacaoRepository {
                 estacao.setNome(result.getString("nm_estacao"));
                 estacao.setId_linha(result.getInt("id_linha"));
 
-               estacaos.add(estacao);
+                return Optional.of(estacao);
 
             }
 
@@ -64,5 +41,32 @@ public class EstacaoRepository {
         // Caso nenhum registro seja encontrado, retorna Optional.empty()
         return Optional.empty();
 
+    }
+
+
+    public List<Estacao> getEstacoesPorLinha(int idLinha) {
+        List<Estacao> estacoes = new ArrayList<>();
+
+        String query = "SELECT * FROM \"T_TT_ESTACAO\" WHERE id_linha = ?";
+
+        try (var connection = DatabaseConfig.getConnection();
+             var preparedStatement = connection.prepareStatement(query)) {
+
+            preparedStatement.setInt(1, idLinha);
+            var result = preparedStatement.executeQuery();
+
+            while (result.next()) {
+                Estacao estacao = new Estacao();
+                estacao.setId(result.getInt("id_estacao"));
+                estacao.setNome(result.getString("nm_estacao"));
+                estacao.setId_linha(result.getInt("id_linha"));
+                estacoes.add(estacao);
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return estacoes;
     }
 }
