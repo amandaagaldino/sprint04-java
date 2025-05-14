@@ -11,58 +11,28 @@ import java.util.List;
 import java.util.Optional;
 
 public class LinhaRepository {
-    List<Linha> linhas = new ArrayList<Linha>();
 
+    public Optional<Linha> getById(int id) {
+        var query = "SELECT * FROM \"T_TT_LINHA_METRO\" WHERE id_linha = ?";
 
-    public List<Linha> getAll() {
-        var query = "SELECT * FROM \"T_TT_LINHA_METRO\"";
-        try (var connection = DatabaseConfig.getConnection()) {
-            var stmt = connection.prepareStatement(query);
-            var result = stmt.executeQuery();
-            while (result.next()){
-                var linha = new Linha();
-                linha.setId(result.getInt("id_linha"));
-                linha.setNome_linha(result.getString("nm_linha"));
-
-
-                linhas.add(linha);
-            }
-        } catch (SQLException e) {
-            System.out.println("Erro ao buscar as linhas no banco de dados");
-            e.printStackTrace();
-        }
-        return linhas;
-    }
-
-
-    public Optional<Alerta> getById(int id) {
-        var query = "SELECT * from \"T_TT_LINHA_METRO\" where id = ?";
         try (var connection = DatabaseConfig.getConnection();
              var preparedStatement = connection.prepareStatement(query)) {
 
-            // Definir o parâmetro na query
             preparedStatement.setInt(1, id);
-
-            // Executar a consulta ao banco
             var result = preparedStatement.executeQuery();
 
-            // Se encontrar um resultado, cria o objeto Alerta e retorna
             if (result.next()) {
-                var linha = new Linha();
+                Linha linha = new Linha();
                 linha.setId(result.getInt("id_linha"));
                 linha.setNome_linha(result.getString("nm_linha"));
 
-
-                linhas.add(linha);
-
+                return Optional.of(linha);
             }
 
-        }
-        catch (SQLException e) {
+        } catch (SQLException e) {
             e.printStackTrace();
         }
-        // Caso nenhum registro seja encontrado, retorna Optional.empty()
-        return Optional.empty();
 
+        return Optional.empty();
     }
 }
