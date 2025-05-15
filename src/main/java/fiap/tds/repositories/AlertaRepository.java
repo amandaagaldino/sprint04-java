@@ -37,9 +37,8 @@ public class AlertaRepository implements _CrudRepository<Alerta>{
             var stmt = connection.prepareStatement(query);
             stmt.setInt(1, id);
             stmt.executeUpdate();
-            System.out.println("Alerta deletado fisicamente do banco de dados.");
         } catch (SQLException e) {
-            System.out.println("Erro ao deletar o alerta do banco de dados");
+
             e.printStackTrace();
         }
    }
@@ -90,7 +89,6 @@ public class AlertaRepository implements _CrudRepository<Alerta>{
                 alerta.setDataHora(result.getTimestamp("dt_hr_alerta").toLocalDateTime().toLocalTime());
                 alerta.setDescricao(result.getString("des_alerta"));
 
-                alertas.add(alerta);
 
                 return Optional.of(alerta);
             }
