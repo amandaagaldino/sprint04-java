@@ -13,7 +13,7 @@ import java.util.Optional;
 public class EstacaoRepository {
 
     public Optional<Estacao> getById(int id) {
-        var query = "SELECT * from \"T_TT_ESTACAO\" where id = ?";
+        var query = "SELECT * from \"T_TT_ESTACAO\" where id_estacao = ?";
         try (var connection = DatabaseConfig.getConnection();
              var preparedStatement = connection.prepareStatement(query)) {
 
