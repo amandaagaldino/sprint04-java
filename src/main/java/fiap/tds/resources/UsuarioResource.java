@@ -17,7 +17,7 @@ public class UsuarioResource {
     private final UsuarioService usuarioService = new UsuarioService();
 
     @POST
-    @Path("/validar")
+    @Path("/login")
     public Response validarUsuario(UsuarioDto dto) {
         boolean valido = usuarioService.validarUsuario(dto);
 
