@@ -12,23 +12,6 @@ import java.util.Optional;
 public class AlertaRepository implements _CrudRepository<Alerta>{
     List<Alerta> alertas = new ArrayList<Alerta>();
 
-    @Override
-    public void add(Alerta object) {
-        var query = "Insert into \"T_TT_ALERTA\"(id_alerta , tipo_alerta, localizacao, dt_hr_alerta, des_alerta) values (?, ?, ?, ?, ?)";
-        try (var connection = DatabaseConfig.getConnection()) {
-            var stmt = connection.prepareStatement(query);
-            stmt.setInt(1, object.getId());
-            stmt.setString(2, object.getTipoAlerta().toString());
-            stmt.setString(3, object.getLocalizacao());
-            stmt.setTimestamp(4, java.sql.Timestamp.valueOf(object.getDataHora().withSecond(0).withNano(0).atDate(java.time.LocalDate.now())));
-            stmt.setString(5, object.getDescricao());
-            stmt.executeUpdate();
-        }
-        catch (SQLException e){
-            System.out.println("Erro ao inserir no banco de dados");
-            e.printStackTrace();
-        }
-    }
 
     @Override
     public void deleteById(int id) {
