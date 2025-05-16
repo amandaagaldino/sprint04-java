@@ -16,6 +16,8 @@ public class  AlertaResource {
 
     private final AlertaService alertaService = new AlertaService();
 
+
+    //Buscar todos os alertas
     @GET
     @Path("/alertas")
     @Produces(MediaType.APPLICATION_JSON)
@@ -26,12 +28,8 @@ public class  AlertaResource {
     }
 
 
-//    public Response rateLimitFallback(){
-//        return Response.status(Response.Status.TOO_MANY_REQUESTS)
-//                .entity("Voce excedeu o limite de requisições")
-//                .build();
-//    }
 
+    //Buscar alerta por id
     @GET
     @Path("/{id}")
     public Response getAlertaPorId(@PathParam("id") int id) {
@@ -42,6 +40,8 @@ public class  AlertaResource {
                         .build());
     }
 
+
+    //Deletar alerta
 
 
 

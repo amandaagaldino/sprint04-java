@@ -18,7 +18,7 @@ import java.util.Scanner;
 public class ManutencaoRepository implements _CrudRepository<Manutencao>{
     List<Manutencao> manutencoes = new ArrayList<Manutencao>();
 
-    @Override
+
     public void add(Manutencao object) {
         var query = "Insert into \"T_TT_MANUTENCAO\"(id_manutencao, local, dt_manutencao, des_manutencao, nivel_alerta) values (?, ?, ?, ?, ?)";
         try (var connection = DatabaseConfig.getConnection()) {
