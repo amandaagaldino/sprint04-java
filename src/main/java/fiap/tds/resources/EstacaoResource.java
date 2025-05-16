@@ -17,6 +17,7 @@ public class EstacaoResource {
 
     private final EstacaoService estacaoService = new EstacaoService();
 
+    //Busca todas as estacoes de acordo com o id da linha
     @GET
     @Path("/{idLinha}/estacoes")
     public Response getEstacoesPorLinha(@PathParam("idLinha") int idLinha) {
@@ -24,6 +25,7 @@ public class EstacaoResource {
         return Response.ok(estacoes).build();
     }
 
+    //Busca a estacao com o id
     @GET
     @Path("/estacoes/{id}")
     public Response getEstacaoPorId(@PathParam("id") int id) {

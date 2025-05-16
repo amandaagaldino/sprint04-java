@@ -14,7 +14,7 @@ public class LinhaResource {
 
     public LinhaService linhaService = new LinhaService();
 
-
+    //Busca a linha com o id
     @GET
     @Path("{id}")
     public Response getLinhaById(@PathParam("id") int id) {
