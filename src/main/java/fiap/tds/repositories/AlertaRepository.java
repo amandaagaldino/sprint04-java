@@ -10,8 +10,6 @@ import java.util.List;
 import java.util.Optional;
 
 public class AlertaRepository implements _CrudRepository<Alerta>{
-    List<Alerta> alertas = new ArrayList<Alerta>();
-
 
     @Override
     public void deleteById(int id) {
@@ -20,8 +18,8 @@ public class AlertaRepository implements _CrudRepository<Alerta>{
             var stmt = connection.prepareStatement(query);
             stmt.setInt(1, id);
             stmt.executeUpdate();
-        } catch (SQLException e) {
-
+        }
+        catch (SQLException e) {
             e.printStackTrace();
         }
    }
@@ -43,8 +41,8 @@ public class AlertaRepository implements _CrudRepository<Alerta>{
 
                 alertas.add(alerta);
             }
-        } catch (SQLException e) {
-            System.out.println("Erro ao buscar os alertas no banco de dados");
+        }
+        catch (SQLException e) {
             e.printStackTrace();
         }
         return alertas;
@@ -53,7 +51,7 @@ public class AlertaRepository implements _CrudRepository<Alerta>{
 
     @Override
     public Optional<Alerta> getById(int id) {
-        var query = "SELECT * from \"T_TT_ALERTA\" where id = ?";
+        var query = "SELECT * from \"T_TT_ALERTA\" where id_alerta = ?";
         try (var connection = DatabaseConfig.getConnection();
              var preparedStatement = connection.prepareStatement(query)) {
 
@@ -71,7 +69,6 @@ public class AlertaRepository implements _CrudRepository<Alerta>{
                 alerta.setLocalizacao(result.getString("localizacao"));
                 alerta.setDataHora(result.getTimestamp("dt_hr_alerta").toLocalDateTime().toLocalTime());
                 alerta.setDescricao(result.getString("des_alerta"));
-
 
                 return Optional.of(alerta);
             }

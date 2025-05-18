@@ -1,10 +1,13 @@
 package fiap.tds.resources;
 
+import fiap.tds.entities.objects.Alerta;
 import fiap.tds.repositories.AlertaRepository;
 import fiap.tds.services.AlertaService;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
+
+import java.util.List;
 
 @Path("/alerta")
 @Produces(MediaType.APPLICATION_JSON)
@@ -16,9 +19,13 @@ public class  AlertaResource {
 
     //Buscar todos os alertas
     @GET
-    @Path("/alertas")
+    @Path("/all-alertas")
     public Response getAlertas() {
-        return Response.ok().entity(alertaService.listarTodos()).build();
+        List<Alerta> alertas = alertaService.listarTodos();
+        if (alertas.isEmpty()) {
+            return Response.ok("Nenhum alerta encontrado.").build();
+        }
+        return Response.ok(alertas).build();
     }
 
 
