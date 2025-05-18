@@ -1,11 +1,7 @@
 package fiap.tds.Dtos;
 
-public class EstacaoDto {
-    public int id;
-    public String nome;
+public record EstacaoDto (
+         int id,
+         String nome
+) {}
 
-    public EstacaoDto(int id, String nome) {
-        this.id = id;
-        this.nome = nome;
-    }
-}

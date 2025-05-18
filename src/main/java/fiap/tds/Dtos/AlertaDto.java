@@ -1,6 +1,6 @@
 package fiap.tds.Dtos;
 
-public record AlertaDto(
+public record AlertaDto (
         int id,
         String tipo,
         String localizacao,
