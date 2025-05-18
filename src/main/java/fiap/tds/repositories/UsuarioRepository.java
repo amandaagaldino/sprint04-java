@@ -10,17 +10,14 @@ import java.util.List;
 import java.util.Optional;
 
 public class UsuarioRepository {
-    List<Usuario> usuarios = new ArrayList<>();
 
     public Optional<Usuario> getById(int id) {
-        var query = "SELECT * from \"T_TT_usuario\" where id = ?";
+        var query = "SELECT * from \"T_TT_usuario\" where id_usuario = ?";
         try (var connection = DatabaseConfig.getConnection();
              var preparedStatement = connection.prepareStatement(query)) {
 
-            // Definir o parâmetro na query
             preparedStatement.setInt(1, id);
 
-            // Executar a consulta ao banco
             var result = preparedStatement.executeQuery();
 
             if (result.next()) {
@@ -28,7 +25,6 @@ public class UsuarioRepository {
                 usuario.setId(result.getInt("id_usuario"));
                 usuario.setSenha(result.getString("senha"));
 
-                //usuarios.add(usuario);
                 return Optional.of(usuario);
             }
 
@@ -40,8 +36,5 @@ public class UsuarioRepository {
         return Optional.empty();
 
     }
-
-
-
 
 }
