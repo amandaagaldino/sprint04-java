@@ -12,16 +12,6 @@ public class AlertaService {
     private final AlertaRepository alertaRepository = new AlertaRepository();
 
 
-    public boolean validateCard(Alerta alerta){
-        if(alerta == null)
-            return false;
-
-        if(alerta.getDescricao().isBlank() || alerta.getDescricao().isBlank())
-            return false;
-
-        return true;
-    }
-
     public Optional<AlertaDto> buscarPorId(int id) {
         return alertaRepository.getById(id).map(alerta ->
                 new AlertaDto(
@@ -36,6 +26,14 @@ public class AlertaService {
 
     public List<Alerta> listarTodos() {
         return alertaRepository.getAll();
+    }
+
+    public boolean excluir(int id){
+        if (alertaRepository.getById(id).isPresent()) {
+            alertaRepository.deleteById(id);
+            return true;
+        }
+        return false;
     }
 
 }
