@@ -1,11 +1,8 @@
 package fiap.tds.repositories;
 
 import fiap.tds.entities.enums.TIPOS_ALERTA;
-import fiap.tds.entities.objects.Alerta;
 import fiap.tds.entities.objects.Manutencao;
 import fiap.tds.infrastructure.DatabaseConfig;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 import java.sql.SQLException;
 import java.time.LocalDate;
